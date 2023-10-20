@@ -12,9 +12,9 @@ The code should accomplish the following:
 ## Solutioning
 
 The code is broken down into modules.
-    - nsg_vnet. This module is to setup network security group and Vnet provisioning.
-    - Loadbalancer. This module is to setup the load-balancer and public IP. The NAT rules, backend-pool are also setup
-    - main module. This module creates the virtual machines and associates the same with the loadbalancer.
+- nsg_vnet. This module is to setup network security group and Vnet provisioning.
+- Loadbalancer. This module is to setup the load-balancer and public IP. The NAT rules, backend-pool are also setup
+- main module. This module creates the virtual machines and associates the same with the loadbalancer.
 
 ## Steps to execute
 
