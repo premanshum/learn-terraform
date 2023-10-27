@@ -1,5 +1,5 @@
 resource "azurerm_network_security_group" "object" {
-  name                = "nsg${var.suffix}"
+  name                = "${var.prefix}network-security-group"
   location            = var.location
   resource_group_name = var.rg_name
 }
@@ -20,22 +20,22 @@ resource "azurerm_network_security_rule" "object" {
 
 
 resource "azurerm_virtual_network" "object" {
-  name                = "vnet${var.suffix}"
+  name                = "${var.prefix}vnet-primary"
   location            = var.location
   resource_group_name = var.rg_name
-  address_space       = ["10.0.0.0/16"]
+  address_space       = ["27.27.0.0/22"]
 
   tags = {
-    environment = "dev"
+    owner = "prem"
   }
 }
 
 resource "azurerm_subnet" "object" {
   count                = 2
-  name                 = "subnet${count.index+1}"
+  name                 = "subnet-${count.index+1}"
   resource_group_name  = var.rg_name
   virtual_network_name = azurerm_virtual_network.object.name
-  address_prefixes     = ["10.0.${count.index+1}.0/24"]
+  address_prefixes     = ["27.27.${count.index+1}.0/24"]
 }
 
 resource "azurerm_subnet_network_security_group_association" "object" {
