@@ -1,6 +1,6 @@
 
 resource "azurerm_public_ip" "object" {
-  name                = "publicip${var.suffix}"
+  name                = "${var.prefix}loadbalancer-publicip"
   resource_group_name = var.rg_name
   location            = var.location
   allocation_method   = "Static"
@@ -13,7 +13,7 @@ resource "azurerm_public_ip" "object" {
 
 resource "azurerm_network_interface" "object" {
   count               = var.vm_count
-  name                = "nic${var.suffix}${count.index+1}"
+  name                = "${var.prefix}nic-${count.index+1}"
   location            = var.location
   resource_group_name = var.rg_name
 
@@ -25,7 +25,7 @@ resource "azurerm_network_interface" "object" {
 }
 
 resource "azurerm_lb" "object" {
-  name                = "loadBalancer${var.suffix}"
+  name                = "${var.prefix}public-load-Balancer-"
   location            = var.location
   resource_group_name = var.rg_name
   sku                 = "Standard"
@@ -70,16 +70,6 @@ resource "azurerm_lb_nat_rule" "Access8222" {
   frontend_port_end              = 8222 + var.vm_count
   backend_port                   = 8222
   backend_address_pool_id        = azurerm_lb_backend_address_pool.object.id
-  frontend_ip_configuration_name = "publicIPAddress"
-}
-
-resource "azurerm_lb_nat_rule" "Access9222" {
-  resource_group_name            = var.rg_name
-  loadbalancer_id                = azurerm_lb.object.id
-  name                           = "Access9222"
-  protocol                       = "Tcp"
-  frontend_port                  = 9222
-  backend_port                   = 8222
   frontend_ip_configuration_name = "publicIPAddress"
 }
 
