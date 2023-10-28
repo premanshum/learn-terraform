@@ -3,6 +3,10 @@ resource "azurerm_network_security_group" "object" {
   location            = var.location
   resource_group_name = var.rg_name
   
+  lifecycle {
+    prevent_destroy = true
+  }
+
   tags = {
     owner = "prem"
   }
@@ -32,6 +36,9 @@ resource "azurerm_virtual_network" "object" {
   tags = {
     owner = "prem"
   }
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "azurerm_subnet" "object" {
@@ -40,6 +47,10 @@ resource "azurerm_subnet" "object" {
   resource_group_name  = var.rg_name
   virtual_network_name = azurerm_virtual_network.object.name
   address_prefixes     = ["27.27.${count.index}.0/24"]
+  
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "azurerm_subnet_network_security_group_association" "object" {
