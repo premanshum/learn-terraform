@@ -2,6 +2,10 @@ resource "azurerm_network_security_group" "object" {
   name                = "${var.prefix}network-security-group"
   location            = var.location
   resource_group_name = var.rg_name
+  
+  tags = {
+    owner = "prem"
+  }
 }
 
 resource "azurerm_network_security_rule" "object" {
@@ -31,11 +35,11 @@ resource "azurerm_virtual_network" "object" {
 }
 
 resource "azurerm_subnet" "object" {
-  count                = 2
-  name                 = "subnet-${count.index+1}"
+  count                = 3
+  name                 = count.index == 0? "default" : "subnet-${count.index}"
   resource_group_name  = var.rg_name
   virtual_network_name = azurerm_virtual_network.object.name
-  address_prefixes     = ["27.27.${count.index+1}.0/24"]
+  address_prefixes     = ["27.27.${count.index}.0/24"]
 }
 
 resource "azurerm_subnet_network_security_group_association" "object" {
