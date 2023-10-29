@@ -47,6 +47,10 @@ resource "azurerm_linux_virtual_machine" "object" {
     sku       = "20_04-lts"
     version   = "latest"
   }
+  
+  tags = {
+    owner = "prem"
+  }
 }
 
 output "nics" {
