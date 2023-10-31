@@ -7,25 +7,12 @@ resource "azurerm_public_ip" "object" {
   sku                 = "Standard"
 
   tags = {
-    environment = "dev"
-  }
-}
-
-resource "azurerm_network_interface" "object" {
-  count               = var.vm_count
-  name                = "${var.prefix}nic-${count.index+1}"
-  location            = var.location
-  resource_group_name = var.rg_name
-
-  ip_configuration {
-    name                          = "nicconfig"
-    subnet_id                     = var.subnet_id
-    private_ip_address_allocation = "Dynamic"
+    owner = "prem"
   }
 }
 
 resource "azurerm_lb" "object" {
-  name                = "${var.prefix}public-load-Balancer-"
+  name                = "${var.prefix}public-load-Balancer"
   location            = var.location
   resource_group_name = var.rg_name
   sku                 = "Standard"
@@ -34,6 +21,9 @@ resource "azurerm_lb" "object" {
     name                 = "publicIPAddress"
     public_ip_address_id = azurerm_public_ip.object.id
   }
+  tags = {
+    owner = "prem"
+  }
 }
 
 resource "azurerm_lb_backend_address_pool" "object" {
@@ -41,12 +31,13 @@ resource "azurerm_lb_backend_address_pool" "object" {
   name            = "BackEndAddressPool"
 }
 
-resource "azurerm_lb_backend_address_pool_address" "object" {
-  count                   = var.vm_count
-  name                    = "backendaddresspoolAddress${count.index+1}"
+#Automated Backend Pool Addition > Gem Configuration to add the network interfaces of the VMs to the backend pool.
+resource "azurerm_network_interface_backend_address_pool_association" "business-tier-pool" {
+  count                   = 2
+  network_interface_id    = var.niclist[count.index].id
+  ip_configuration_name   = var.niclist[count.index].ip_configuration[0].name
   backend_address_pool_id = azurerm_lb_backend_address_pool.object.id
-  virtual_network_id      = var.vnet_id
-  ip_address              = azurerm_network_interface.object[count.index].private_ip_address
+
 }
 
 resource "azurerm_lb_nat_rule" "Access22" {
@@ -93,14 +84,4 @@ output "public_ip_address" {
 output "public_ip_address_id" {
   value       = azurerm_public_ip.object.id
   description = "The ID of public IP address"
-}
-
-output "nics" {
-  value       = azurerm_network_interface.object
-  description = "nic"
-}
-
-output "backendpooladdress" {
-  value       = azurerm_lb_backend_address_pool_address.object
-  description = "nic"
 }
