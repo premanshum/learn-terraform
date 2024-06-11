@@ -12,8 +12,8 @@ provider "azurerm" {
   skip_provider_registration = "true"
   features {}
   
-  subscription_id   = "df43b9ea-cec5-46f2-ace2-622430cfc26d"
-  tenant_id         = "05d75c05-fa1a-42e7-9cf1-eb416c396f2d"
-  client_id         = "eec83b7b-<rest-guid>"
-  client_ka_guptshabd     = "ka_guptshabd ko replace karna english mein"
+  subscription_id   = "<guid of subscription"
+  tenant_id         = "<guid of tenant>"
+  client_id         = "<client-id-guid>"
+  client_secret     = "<secret>"
 }
