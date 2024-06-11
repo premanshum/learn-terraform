@@ -27,7 +27,7 @@ variable "subnet_name" {
 variable "subscriptions" {
     description = "List of subscriptions which are allowed"
     type        = list(string)
-    default     = ["76a256fd-59fd-473a-9214-04eaddbcd56e", "b7fd0ade-bcd7-4416-bee0-558517f033a6"]
+    default     = ["<guid of subscription-1>", "<guid of subscription 2>"]
 }
 variable "vnet_name" {
     description = "Name of the virtual net that will contain the private link"
