@@ -5,7 +5,7 @@ az login
 az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/<subscription-guid>" --display-name "spn-prem-cpl"
 
 # Alternatively, create an SPN via Admiral and provide the Contributor role.
-# For this case, use service-principal spn-prem-cpl (appid: eec83b7b-fb97-4af5-a989-ffcd18e8df9d)
+# For this case, use service-principal s_p_n-p_r_e_m-cpl (appid: <guid>)
 
 # Set environment variables for Azure login
 $env:ARM_CLIENT_ID = ""
